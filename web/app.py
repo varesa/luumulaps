@@ -7,6 +7,9 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ['DB_URL']
 db.init_app(app)
 
+with app.app_context():
+    db.create_all()
+
 
 @app.route("/")
 def hello():
@@ -29,7 +32,4 @@ def laptime():
 
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-
     app.run(host='0.0.0.0')
