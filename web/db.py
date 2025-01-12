@@ -1,3 +1,5 @@
+from datetime import datetime
+from sqlalchemy import DateTime, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from flask_sqlalchemy import SQLAlchemy
 
@@ -14,12 +16,14 @@ class LapTime(db.Model):
     driver: Mapped[str]
     map: Mapped[str]
     car: Mapped[str]
-    time: Mapped[int]
+    laptime: Mapped[int]
+    date: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     def to_dict(self):
         return {
             "driver": self.driver,
             "map": self.map,
             "car": self.car,
-            "time": self.time,
+            "laptime": self.time,
+            "date": self.date
         }
