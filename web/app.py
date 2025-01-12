@@ -15,8 +15,8 @@ with app.app_context():
 class CustomJsonProvider(DefaultJSONProvider):
     @staticmethod
     def default(obj):
-        if hasattr(obj, 'json'):
-            return obj.json()
+        if hasattr(obj, 'to_dict'):
+            return obj.to_dict()
         else:
             return DefaultJSONProvider.default(obj)
 

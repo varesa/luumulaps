@@ -1,6 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from flask_sqlalchemy import SQLAlchemy
-import json
 
 
 class Base(DeclarativeBase):
@@ -17,10 +16,10 @@ class LapTime(db.Model):
     car: Mapped[str]
     time: Mapped[int]
 
-    def json(self):
-        return json.dumps({
+    def to_dict(self):
+        return {
             "driver": self.driver,
             "map": self.map,
             "car": self.car,
             "time": self.time,
-        })
+        }
