@@ -17,7 +17,7 @@ def hello():
 
 
 @app.route("/laptime", methods=['POST'])
-def laptime():
+def post_laptime():
     time = LapTime(
         **request.json
     )
@@ -26,7 +26,7 @@ def laptime():
 
 
 @app.route("/laptimes", methods=['GET'])
-def laptime():
+def get_laptimes():
     times = db.session.execute(db.select(LapTime)).scalars()
     return jsonify(times)
 
