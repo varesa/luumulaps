@@ -13,17 +13,19 @@ def hello():
     return "hello"
 
 
-@app.route("/laptime", methods=['GET', 'POST'])
+@app.route("/laptime", methods=['POST'])
 def laptime():
-    if request.method == 'POST':
-        time = LapTime(
-            **request.json
-        )
-        db.session.add(time)
-        db.session.commit()
-    else:
-        times = db.session.execute(db.select(LapTime)).scalars()
-        return jsonify(times)
+    time = LapTime(
+        **request.json
+    )
+    db.session.add(time)
+    db.session.commit()
+
+
+@app.route("/laptimes", methods=['GET'])
+def laptime():
+    times = db.session.execute(db.select(LapTime)).scalars()
+    return jsonify(times)
 
 
 if __name__ == "__main__":
