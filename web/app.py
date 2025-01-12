@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, jsonify
+from flask.json.provider import DefaultJSONProvider
 from db import db, LapTime
 
 
@@ -9,6 +10,19 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+
+class CustomJsonProvider(DefaultJSONProvider):
+    @staticmethod
+    def default(obj):
+        if hasattr(obj, 'json'):
+            return obj.json()
+        else:
+            return DefaultJSONProvider.default(obj)
+
+
+app.json_provider_class = CustomJsonProvider
+app.json = CustomJsonProvider(app)
 
 
 @app.route("/")
@@ -23,11 +37,12 @@ def post_laptime():
     )
     db.session.add(time)
     db.session.commit()
+    return "OK"
 
 
 @app.route("/laptimes", methods=['GET'])
 def get_laptimes():
-    times = db.session.execute(db.select(LapTime)).scalars()
+    times = db.session.execute(db.select(LapTime)).scalars().all()
     return jsonify(times)
 
 
